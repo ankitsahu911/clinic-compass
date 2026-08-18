@@ -8,6 +8,7 @@ import {
   Scripts,
 } from "@tanstack/react-router";
 import { useEffect, type ReactNode } from "react";
+import { Activity } from "lucide-react";
 
 import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
@@ -77,11 +78,18 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "Lovable App" },
-      { name: "description", content: "Lovable Generated Project" },
-      { name: "author", content: "Lovable" },
-      { property: "og:title", content: "Lovable App" },
-      { property: "og:description", content: "Lovable Generated Project" },
+      { title: "CareAssist — AI Treatment Planning Support" },
+      {
+        name: "description",
+        content:
+          "Clinician-facing decision support for Type 2 Diabetes: risk prediction, explainability, medicine affordability and facility-aware referral guidance.",
+      },
+      { property: "og:title", content: "CareAssist — AI Treatment Planning Support" },
+      {
+        property: "og:description",
+        content:
+          "Explainable, India-focused clinical decision support for Type 2 Diabetes care planning.",
+      },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
       { name: "twitter:site", content: "@Lovable" },
@@ -90,6 +98,12 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       {
         rel: "stylesheet",
         href: appCss,
+      },
+      { rel: "preconnect", href: "https://fonts.googleapis.com" },
+      { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
+      {
+        rel: "stylesheet",
+        href: "https://fonts.googleapis.com/css2?family=Outfit:wght@300..700&family=Sora:wght@500..700&display=swap",
       },
       { rel: "icon", href: "/favicon.ico", type: "image/x-icon" },
     ],
@@ -119,8 +133,48 @@ function RootComponent() {
 
   return (
     <QueryClientProvider client={queryClient}>
-      {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
-      <Outlet />
+      <div className="flex min-h-screen flex-col">
+        <header className="sticky top-0 z-30 border-b border-border bg-card/85 backdrop-blur">
+          <div className="mx-auto flex max-w-6xl items-center gap-6 px-4 py-3">
+            <Link to="/" className="flex items-center gap-2">
+              <span className="flex size-9 items-center justify-center rounded-lg bg-primary text-primary-foreground">
+                <Activity className="size-5" />
+              </span>
+              <span className="font-semibold tracking-tight">CareAssist</span>
+            </Link>
+            <nav className="flex items-center gap-1 text-sm">
+              {[
+                { to: "/", label: "Patients" },
+                { to: "/medicines", label: "Affordability" },
+                { to: "/referral", label: "Referral" },
+                { to: "/model", label: "Model" },
+                { to: "/about", label: "Methodology" },
+              ].map((item) => (
+                <Link
+                  key={item.to}
+                  to={item.to}
+                  activeOptions={{ exact: item.to === "/" }}
+                  className="rounded-md px-3 py-1.5 text-muted-foreground transition-colors hover:bg-secondary hover:text-foreground"
+                  activeProps={{ className: "bg-secondary text-foreground font-medium" }}
+                >
+                  {item.label}
+                </Link>
+              ))}
+            </nav>
+            <span className="ml-auto hidden rounded-full bg-accent px-3 py-1 text-xs font-medium text-accent-foreground sm:inline">
+              Dr. A. Sthitapranjya · Doctor
+            </span>
+          </div>
+        </header>
+        {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
+        <main className="flex-1">
+          <Outlet />
+        </main>
+        <footer className="border-t border-border bg-surface-tint px-4 py-6 text-center text-xs text-muted-foreground">
+          Decision support only — not a diagnosis or prescription. Final clinical decisions rest with
+          a qualified healthcare professional. All data shown is synthetic.
+        </footer>
+      </div>
     </QueryClientProvider>
   );
 }
