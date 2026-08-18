@@ -10,6 +10,7 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AboutRouteImport } from './routes/about'
 import { Route as MedicinesRouteImport } from './routes/medicines'
 import { Route as ModelRouteImport } from './routes/model'
 import { Route as ReferralRouteImport } from './routes/referral'
@@ -18,6 +19,11 @@ import { Route as PatientsPatientIdRouteImport } from './routes/patients.$patien
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AboutRoute = AboutRouteImport.update({
+  id: '/about',
+  path: '/about',
   getParentRoute: () => rootRouteImport,
 } as any)
 const MedicinesRoute = MedicinesRouteImport.update({
@@ -43,6 +49,7 @@ const PatientsPatientIdRoute = PatientsPatientIdRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/about': typeof AboutRoute
   '/medicines': typeof MedicinesRoute
   '/model': typeof ModelRoute
   '/referral': typeof ReferralRoute
@@ -50,6 +57,7 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/about': typeof AboutRoute
   '/medicines': typeof MedicinesRoute
   '/model': typeof ModelRoute
   '/referral': typeof ReferralRoute
@@ -58,6 +66,7 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/about': typeof AboutRoute
   '/medicines': typeof MedicinesRoute
   '/model': typeof ModelRoute
   '/referral': typeof ReferralRoute
@@ -66,12 +75,24 @@ export interface FileRoutesById {
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
-    '/' | '/medicines' | '/model' | '/referral' | '/patients/$patientId'
+    | '/'
+    | '/about'
+    | '/medicines'
+    | '/model'
+    | '/referral'
+    | '/patients/$patientId'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/medicines' | '/model' | '/referral' | '/patients/$patientId'
+  to:
+    | '/'
+    | '/about'
+    | '/medicines'
+    | '/model'
+    | '/referral'
+    | '/patients/$patientId'
   id:
     | '__root__'
     | '/'
+    | '/about'
     | '/medicines'
     | '/model'
     | '/referral'
@@ -80,6 +101,7 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AboutRoute: typeof AboutRoute
   MedicinesRoute: typeof MedicinesRoute
   ModelRoute: typeof ModelRoute
   ReferralRoute: typeof ReferralRoute
@@ -93,6 +115,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/about': {
+      id: '/about'
+      path: '/about'
+      fullPath: '/about'
+      preLoaderRoute: typeof AboutRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/medicines': {
@@ -128,6 +157,7 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AboutRoute: AboutRoute,
   MedicinesRoute: MedicinesRoute,
   ModelRoute: ModelRoute,
   ReferralRoute: ReferralRoute,
