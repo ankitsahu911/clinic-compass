@@ -286,7 +286,7 @@ export type ReferralResult = {
 };
 
 export function checkReferral(facilityId: string, service: string): ReferralResult {
-  const current = getFacility(facilityId) ?? facilities[1];
+  const current: Facility = getFacility(facilityId) ?? (facilities[1] as Facility);
   if (current.services.includes(service)) {
     return {
       availableLocally: true,
