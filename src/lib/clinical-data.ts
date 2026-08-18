@@ -281,7 +281,7 @@ export const getFacility = (id: string) => facilities.find((f) => f.id === id);
 export type ReferralResult = {
   availableLocally: boolean;
   currentFacility: Facility;
-  suggested?: Facility;
+  suggested?: Facility | undefined;
   message: string;
 };
 
