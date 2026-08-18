@@ -10,12 +10,18 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as MedicinesRouteImport } from './routes/medicines'
 import { Route as ModelRouteImport } from './routes/model'
 import { Route as PatientsPatientIdRouteImport } from './routes/patients.$patientId'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MedicinesRoute = MedicinesRouteImport.update({
+  id: '/medicines',
+  path: '/medicines',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ModelRoute = ModelRouteImport.update({
@@ -31,30 +37,34 @@ const PatientsPatientIdRoute = PatientsPatientIdRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/medicines': typeof MedicinesRoute
   '/model': typeof ModelRoute
   '/patients/$patientId': typeof PatientsPatientIdRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/medicines': typeof MedicinesRoute
   '/model': typeof ModelRoute
   '/patients/$patientId': typeof PatientsPatientIdRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/medicines': typeof MedicinesRoute
   '/model': typeof ModelRoute
   '/patients/$patientId': typeof PatientsPatientIdRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/model' | '/patients/$patientId'
+  fullPaths: '/' | '/medicines' | '/model' | '/patients/$patientId'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/model' | '/patients/$patientId'
-  id: '__root__' | '/' | '/model' | '/patients/$patientId'
+  to: '/' | '/medicines' | '/model' | '/patients/$patientId'
+  id: '__root__' | '/' | '/medicines' | '/model' | '/patients/$patientId'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  MedicinesRoute: typeof MedicinesRoute
   ModelRoute: typeof ModelRoute
   PatientsPatientIdRoute: typeof PatientsPatientIdRoute
 }
@@ -66,6 +76,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/medicines': {
+      id: '/medicines'
+      path: '/medicines'
+      fullPath: '/medicines'
+      preLoaderRoute: typeof MedicinesRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/model': {
@@ -87,6 +104,7 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  MedicinesRoute: MedicinesRoute,
   ModelRoute: ModelRoute,
   PatientsPatientIdRoute: PatientsPatientIdRoute,
 }
